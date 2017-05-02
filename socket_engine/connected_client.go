@@ -26,7 +26,6 @@ func NewConnectedClient(clientConnection *websocket.Conn) *ConnectedClient {
 
 	go func() {
 		for {
-
 			inputMessage := MessageEvent{}
 			_, messageBytes, err := clientConnection.ReadMessage()
 

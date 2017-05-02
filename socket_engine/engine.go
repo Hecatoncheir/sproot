@@ -81,7 +81,6 @@ func (engine *Engine) listenConnectedClient(client *ConnectedClient) {
 
 			engine.Clients[event.ClientID].Write(message.Message, message.Data)
 
-		case "Item from categories of company parsed":
 		default:
 			engine.WriteAll(event.Message, event.Data)
 		}
