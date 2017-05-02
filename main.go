@@ -1,15 +1,18 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	socket "sproot/socket_engine"
 	"github.com/gorilla/websocket"
+	crawler "hecatonhair/crawler"
 	"log"
 	"os"
-	"encoding/json"
+	"sproot/data"
+	socket "sproot/socket_engine"
 )
 
 func main() {
+	// TODO: add reconnection
 	connection, _, err := websocket.DefaultDialer.Dial("ws://0.0.0.0:8181", nil)
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +33,20 @@ func main() {
 
 			switch inputMessage.Message {
 			case "Item from categories of company parsed":
-				fmt.Print(inputMessage)
+				parsedItem := crawler.Item{}
+				bytes, err := json.Marshal(inputMessage.Data.(map[string]interface{})["Item"])
+				if err != nil {
+					fmt.Println(err)
+				}
+
+				json.Unmarshal(bytes, &parsedItem)
+				fmt.Print(parsedItem)
+
+				item, err := data.GetItemByName(parsedItem.Name)
+				if err != nil {
+					fmt.Println(err)
+				}
+				fmt.Println(item.Name)
 			}
 		}
 	}()
