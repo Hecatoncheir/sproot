@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+	// TODO: add log
 	// TODO: add reconnection
 	connection, _, err := websocket.DefaultDialer.Dial("ws://0.0.0.0:8181", nil)
 	if err != nil {
